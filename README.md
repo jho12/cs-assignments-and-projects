@@ -3,4 +3,4 @@ A collection of computer science and cybersecurity assignments and projects I ha
 
 The collection is separated by class then by the order of when a particular assignment was assigned.
 
-Readmes are included within each folder with a bried overview of what that project was and its purpose.
+Readmes are included within each folder with a brief overview of what that project was and its purpose.
