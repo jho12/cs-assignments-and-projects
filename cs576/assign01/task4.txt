@@ -1,0 +1,7 @@
+task4.txt
+I pledge my honor that I have abided by the Stevens Honor System.
+Justin Ho
+
+I used the avatar.srcit.stevens-tech.edu host.
+
+In creating the Python scripts that output the exploits, I import the sys module for writing out the exploit. I then copy and paste the compiled shellcode from their respective .c files to the script. I then set the new return address to where the shellcode is in the stack for execution; in vuln_prog1.bin, there are two places where the shellcode resides in memory, the buffer in complex_verify() and the buffer in read_input(). I chose to point the return address to the buffer in read_input(): specifically 96 bytes from the start of the buffer (0x7fffffffbf20). I verified this place in memory by noticing that the disassemblies of read_input() in both the normal and GDB environments feature the exact same instruction address after calling complex_verify(); naturally, this must mean that both environments have the same return addresses in memory, so by cross-referencing the return address at $rbp in read_input() inside the GDB environment, I found out the structure of the stack in the normal environment, allowing me to identify where $rbp is and thus where the buffers in read_input() and complex_verify() and where the complex_verify() return address are, the most important being where complex_verify()'s return address is, 528 bytes away.

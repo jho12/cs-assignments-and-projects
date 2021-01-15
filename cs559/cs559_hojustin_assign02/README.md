@@ -1,0 +1,2 @@
+# Assignment 2
+This assignment tested practical knowledge on implementation of two common machine learning algorithms, k-nearest neighbor (KNN) and maximum-likelihood estimation (MLE). Implementation in MatLab.

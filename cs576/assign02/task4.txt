@@ -1,0 +1,7 @@
+task4.txt
+I pledge my honor that I have abided by the Stevens Honor System.
+Justin Ho
+
+I used the avatar.srcit.stevens-tech.edu host to construct my attack.
+
+Much like in Task 2, I used malicious_input3.py as a base for malicious_input4.py, with some changes to frames. To start off, I added the address to exit(); like in malicious_input3.py, I found out this address by using the netcat+attach method, breaking to exit() when it is called in rude() and printing exit to get the address. With this new information, I edited the frames array. Specifically, I added three new items: [gadget_addr, 0, exit_addr]. We reuse gadget_addr because like system(), exit() takes one argument, which is stored in $rdi. After gadget_addr comes the argument of exit(), which we define as a string of 8 0x0 bytes since read() does not terminate from null bytes. Finally is exit_addr, which calls exit(0). The final change is in string_addr, which we now redefine the offset from buffer_start as 0x108 + 48 bytes since frames now contains six 8-byte strings. With these changes, the script then builds the payload.

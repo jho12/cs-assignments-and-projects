@@ -1,0 +1,27 @@
+task1.txt
+I pledge my honor that I have abided by the Stevens Honor System.
+Justin Ho
+
+I used the avatar.srcit.stevens-tech.edu host to construct my attack.
+
+To create my attack, I used the provided lab05/ret2sf2_exit.py script as a base, shifting and editing the particulars of the script. Starting from the top, oflow and string were edited to be a string of 268 (or 0x10c) 'A's and a string containing the command to run, "/bin/cat /etc/passwd". oflow contains 268 'A's because from the top of the buffer we overflow the stack from, the return address of the print_argument() function is located at a 268-byte offset. string, on the other hand, is the end goal of the attack, and is meant to be added at the end of the payload due to its null terminator. fakeret is left unchanged.
+
+Next, I specify the various addresses necessary to complete the attack. buffer_start, the address of the top of the buffer, is set to 0xffffd1d0; this address was found by looking at $esp after the vulnerable strcpy() executes when running with a file filled with 'A's and finding where the 0x41 bytes start appearing. Next is string_addr, which is set to buffer_start + 0x10c + 12; in my payload's structure, string is placed at the very end, meaning that string is printed after the 268 'A's and the return-to-libc attack (which, in this case, is 3-words long and thus is 12-bytes long). Since I know string will be placed at that particular address, I place the address into string_addr to have a pointer ready to pass into the system() function call. Finally, I specify the base address of libc (libc_base) and the offset of the system() function within libc (system_offset) to get the address where system() is contained (system_addr). To find libc_base, I broke at main() in GDB and ran
+
+  info proc mappings
+
+and grabbed the address libc-2.23.so is loaded at (0xf7e0c000). To find system_offset, I ran
+
+  readelf -s /lib/i386-linux-gnu/libc.so.6 | grep system
+
+and found the offset system() is from the top of libc is 0x0003adb0. Adding these values together, I created system_addr.
+
+To round off, I edited the frames array to contain an array of the following structure:
+
+  [system_addr, fakeret, string_addr]
+
+These are the crucial components of the payload that overwrite the bytes at print_argument()'s return address as discussed earlier, starting at system_addr. frames remains 2D in this case merely to minimize changes to malicious_input2.py. After the declaration of frames, the exploit is then constructed in order of:
+
+  oflow -> frames -> string
+
+of which, upon completion, is then set to be written to stdout.

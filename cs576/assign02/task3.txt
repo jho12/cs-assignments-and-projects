@@ -1,0 +1,26 @@
+task3.txt
+I pledge my honor that I have abided by the Stevens Honor System.
+Justin Ho
+
+I used the avatar.srcit.stevens-tech.edu host to construct my attack.
+
+Using malicious_input1.py as a base, malicious_input3.py needed several structural modifications to address the differences between the 32-bit binary and the 64-bit binary. To start, oflow was changed from having 0x10c (268) 'A's to having 0x108 (264) 'A's; this change is due to differences in the x86-32 and x86-64 architectures. string is left the same, as the end goal is the same; fakeret was deleted since it is not needed.
+
+Similarly to malicious_input1.py and malicious_input2.py, I define string_addr via an offset from the starting address of the buffer (buffer_start). string_addr is at an 0x108 + 24 byte offset from the top of the buffer; 0x108 is from oflow, 24 from the three 8-byte addresses within the frames array. buffer_start is set to 0x7fffffffe210: this address was found by using the netcat+attach method to break into get_text() in a non-GDB address space and looking at the address of $rsp right after the read. In addition, system_addr was changed from the libc_base+system_offset calculation and instead is set via letting welcome() run - which leads to running name(), which leads to running system() - and noting the address of system() by running:
+
+  print system
+
+in GDB. I used this particular method since did not find the mappings+offset method to accurately point to system(). A new addition to the rest of the addresses is gadget_addr, set to 0x400803. This address was found using ROPgadget to find a gadget that executes the following instructions:
+
+  pop rdi
+  ret
+
+We use $rdi in this case to store string as the argument to system(), taking advantage of the pop instruction and our control of the stack.
+
+We then get into the frames array, in which we have, in order, gadget_addr, string_addr, and system_addr. These items come after oflow in the payload, meaning that these directly overwrite the return address of get_text(). To that end, we have gadget_addr to replace the return address, redirecting to the instructions shown previously. Additionally, because we return to gadget_addr after get_text() executes, it means that string_addr is at the top of the stack, thus having a pointer to string loaded into $rdi. Once the pointer is popped, the gadget then returns, which leads to executing system() from system_addr with $rdi having our end-goal command loaded into it.
+
+Everything taken together, we then build the payload with order:
+
+  oflow -> gadget_addr -> string_addr -> system_addr -> string
+
+and send it to stdout.

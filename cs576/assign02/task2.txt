@@ -1,0 +1,28 @@
+task2.txt
+I pledge my honor that I have abided by the Stevens Honor System.
+Justin Ho
+
+I used the avatar.srcit.stevens-tech.edu host to construct my attack.
+
+Using malicious_input1.py as a base, there are several changes made to fit the requirements of Task 2. First is the addition of exit_gadget, which is a gadget that runs the following instructions:
+
+  pop $some_register
+  ret
+
+We use this gadget specifically to transition from system() into exit() by popping the string pointer argument for system() off the stack so that the vulnerable program can start executing exit(). Additionally, this gadget was found by using the --ropchain option from ROPgadget on vuln_prog1.bin to find specifically a pop into a return.
+
+Next, there are two changes in regards to string_addr. First is the change to buffer_start, which was changed from 0xffffd1d0 to 0xffffd1c0; the buffer was shifted from malicious_input1.txt, which affects where string is in memory and thus affects the string pointer. Additionally, the offset from buffer_start is now 0x10c + 24 bytes, since the frames array now has six 4-byte items.
+
+Next, I added exit_offset and exit_addr to the libc and system() address from malicious_input1.py. Self-evidently, this is for calling exit(). Finding exit_offset by running:
+
+  readelf -s /lib/i386-linux-gnu/libc.so.6 | grep exit
+
+exit()'s offset ended up being 0x0002e9e0, which is then added to libc_base to get exit_addr.
+
+Finally, I added an array to the frames array to contain the necessary chain into exit(). First, the system array replaces fakeret with exit_gadget to chain execution from system() into exit(). Next is the exit array itself, which is of the form:
+
+  [exit_addr, fakeret, 0x1010101]
+
+exit_addr is the address to exit() in libc as previously established. fakeret is a dummy value just to follow x86 calling convention. Finally is the argument for exit(). Since vuln_prog1.bin does not allow for calling exit(0) in this context because strcpy() stops at the first null byte, the argument provided is 0x1010101 instead; additionally, since exit(int status) processes status to be the least significant byte of (status & 0xff), this call to exit() is executed as exit(1).
+
+With these changes in mind, the script then builds the payload.

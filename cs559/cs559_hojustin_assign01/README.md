@@ -1,0 +1,2 @@
+# Assignment 1
+This assignment was a mixture of testing conceptual and practical knowledge. Problems 1 and 2 in the PDF were simple statistical questions, while problem 3 was to create a normal distribution and then derive calculations from its results. Implementation in Python.

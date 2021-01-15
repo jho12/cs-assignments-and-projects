@@ -1,0 +1,5 @@
+task3.txt
+I pledge my honor that I have abided by the Stevens Honor System.
+Justin Ho
+
+To execute a new bash instance, I used the execve system call. To this end, I started by setting %rax to the execve call number, 59. I then set the file path to /bin/bash in %rdi. Similar to the previous two shellcodes, I set the bytes after /bin/bash to null for a properly null-terminated string in the attacks, and similarly, the initial way I used to terminate the string saw problems in vuln_prog2.bin. I initially set the byte at offset 0x09 in the string, but the \x09 character is a whitespace character, so I then changed the memory addressing mode to the D(B,I,S) structure, splitting the \x09 character into \x08 and \x01 characters. I also increased the offset used in the lea instruction by 1 because the offsets used in the passwd files resulted in a \x20 character in the shellcode, which is the space character and thus stops scanf() in vuln_prog2.bin.s I then set the args and envp arrays to null. Additionally, while execve() does not return when successfully executed, I added the exit() syscall in the case it does not execute for some reason.

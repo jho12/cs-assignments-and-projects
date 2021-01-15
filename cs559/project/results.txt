@@ -1,0 +1,109 @@
+Random forest classifications of phishing sites
+==================================================
+Number of trees: 1 | Number of iterations: 1
+Test mean: 0.964727		Extra test mean: 0.727199
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 1 | Number of iterations: 5
+Test mean: 0.993609		Extra test mean: 0.799349
+Test std:  0.006572		Extra test std:  0.196265
+
+Number of trees: 1 | Number of iterations: 10
+Test mean: 0.974646		Extra test mean: 0.645195
+Test std:  0.020401		Extra test std:  0.215674
+
+Number of trees: 5 | Number of iterations: 1
+Test mean: 0.993669		Extra test mean: 0.612378
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 5 | Number of iterations: 5
+Test mean: 0.998734		Extra test mean: 0.858143
+Test std:  0.001601		Extra test std:  0.102077
+
+Number of trees: 5 | Number of iterations: 10
+Test mean: 0.999427		Extra test mean: 0.811401
+Test std:  0.001029		Extra test std:  0.145100
+
+Number of trees: 10 | Number of iterations: 1
+Test mean: 1.000000		Extra test mean: 0.997557
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 10 | Number of iterations: 5
+Test mean: 0.999096		Extra test mean: 0.813681
+Test std:  0.001348		Extra test std:  0.256341
+
+Number of trees: 10 | Number of iterations: 10
+Test mean: 0.999879		Extra test mean: 0.803257
+Test std:  0.000291		Extra test std:  0.134924
+
+Number of trees: 25 | Number of iterations: 1
+Test mean: 1.000000		Extra test mean: 0.995114
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 25 | Number of iterations: 5
+Test mean: 1.000000		Extra test mean: 0.996091
+Test std:  0.000000		Extra test std:  0.008740
+
+Number of trees: 25 | Number of iterations: 10
+Test mean: 1.000000		Extra test mean: 0.861564
+Test std:  0.000000		Extra test std:  0.174755
+
+Number of trees: 50 | Number of iterations: 1
+Test mean: 1.000000		Extra test mean: 1.000000
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 50 | Number of iterations: 5
+Test mean: 1.000000		Extra test mean: 0.993974
+Test std:  0.000000		Extra test std:  0.012155
+
+Number of trees: 50 | Number of iterations: 10
+Test mean: 1.000000		Extra test mean: 0.986808
+Test std:  0.000000		Extra test std:  0.028801
+
+Number of trees: 80 | Number of iterations: 1
+Test mean: 1.000000		Extra test mean: 1.000000
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 80 | Number of iterations: 5
+Test mean: 1.000000		Extra test mean: 1.000000
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 80 | Number of iterations: 10
+Test mean: 1.000000		Extra test mean: 0.989658
+Test std:  0.000000		Extra test std:  0.031004
+
+Number of trees: 100 | Number of iterations: 1
+Test mean: 1.000000		Extra test mean: 0.998371
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 100 | Number of iterations: 5
+Test mean: 1.000000		Extra test mean: 1.000000
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 100 | Number of iterations: 10
+Test mean: 1.000000		Extra test mean: 0.998779
+Test std:  0.000000		Extra test std:  0.002405
+
+Number of trees: 200 | Number of iterations: 1
+Test mean: 1.000000		Extra test mean: 1.000000
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 200 | Number of iterations: 5
+Test mean: 1.000000		Extra test mean: 1.000000
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 200 | Number of iterations: 10
+Test mean: 1.000000		Extra test mean: 0.999919
+Test std:  0.000000		Extra test std:  0.000258
+
+Number of trees: 500 | Number of iterations: 1
+Test mean: 1.000000		Extra test mean: 1.000000
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 500 | Number of iterations: 5
+Test mean: 1.000000		Extra test mean: 1.000000
+Test std:  0.000000		Extra test std:  0.000000
+
+Number of trees: 500 | Number of iterations: 10
+Test mean: 1.000000		Extra test mean: 1.000000
+Test std:  0.000000		Extra test std:  0.000000

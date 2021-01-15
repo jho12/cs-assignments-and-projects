@@ -1,0 +1,19 @@
+task1.txt
+I pledge my honor that I have abided by the Stevens Honor System.
+Justin Ho
+
+Following the skeleton outlined in the sample hello*.S files, I created _start and passwd sections, the former for taking care of the system calls and the latter for storing the file path string to /etc/passwd. From the top of _start, passwd-1.S first sets up the open syscall with setting the %rax register to the open call number, 2. It then sets the flags and mode arguments to 0 for read-only access. It then gives the API the "/etc/passwd" file path. The assignment itself is not enough though, since when injected into the vulnerable programs, a chunk of the payload is seen at the end of the filename string. To fix this, before doing the system call, the shellcode sets the bytes after the initial "/etc/passwd" to null, null terminating the string and ensuring that the programs execute opens the file correctly. My original way of doing this was to do:
+
+	  mov %edx, 11(%rdi)
+
+However, this became problematic in vuln_prog2 because the program uses scanf() with the %s format to read the malicious input, which stops reading from the input once it encounters a whitespace character. Because of my use of 11, the compiled shellcode resulted in a \x11 in the file, which is a vertical tab character in ASCII and thus stops the reading in vuln_prog2. To fix this, I use D(B,I,S) memory addressing mode to get to the byte at 11(%rdi). By setting value 8 in register %r8, I set the byte at 11(%rdi) null by doing:
+
+	 mov %edx, 3(%rdi, %r8, 1)
+
+which does the same function of the previous instruction without the problem of the \x11 character. The reason why I skipped ahead to using 0x03 and 0x08 instead of using 0x02 and 0x09 is because the \x09 character is recognized as a horizontal tab, another whitespace character. \x03 and \x08 both happen to not be whitespace characters, so vuln_prog2.bin does not have a problem with them when performing scanf().
+
+Next, the shellcode sets up the read API call. Under 64-bit Linux systems, %rax contains the return value of system calls, which, in this case, contains the file descriptor for /etc/passwd. Using this fact, the shellcode moves the file descriptor to the %rdi register for the read syscall before setting %rax to 0 in preparation of the syscall. It then creates a 48-character long buffer in the stack by subtracting 32 from the stack pointer. The new value of the stack pointer is then moved to %rsi and the value 48 is stored in %dl. The read syscall is then executed. (I had initially used 32 as my buffer size rather than 48, but I ran into problems again in vuln_prog2.bin and its scanf() call because 32 is recognized as \x20, which also happens to be the space character.)
+
+Next, the shellcode sets up the write API call by first setting %rax to 1 for the write call. It then sets %rdi to 1 as that is the value of the file descriptor for stdout. At this point, nothing more is changed since the read syscall sets up the %rsi and %rdx registers perfectly for the write syscall. At this point, write is called.
+
+Finally, the shellcode finished execution by calling the exit syscall, setting %al to 60 for the exit API and setting %rdi to 0 for exiting with no errors. The shellcode then calls exit and finishes execution.

@@ -1,0 +1,7 @@
+task5.txt
+I pledge my honor that I have abided by the Stevens Honor System.
+Justin Ho
+
+I used the avatar.srcit.stevens-tech.edu host.
+
+Like Task 4, all malicious_input-5 Python scripts have the same structure. After copying and pasting the respective shellcode, I set the new return address to directly after the return address (0x7fffffffc0d0) to get around complex_verify() drastically reducing the attack space in the function from executing mov %rbx, %rsp just after scanf() executes and just before complex_verify() completes, as at that point, the buffer starts at %rsp and %rbx then overwrites a large chunk of the data in the stack. How I determined the return address follows the same principle in Task 4: cross-referencing memory contents of the normal and GDB environments by looking at the return address of complex_verify(). Building the exploit, I generate 248 'A's and then append the new return address and the shellcode, which then is ready to be written to the exploit files.
