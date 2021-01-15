@@ -1,0 +1,2 @@
+# Assignment 1
+The goal of this assignment was to encode and subsequently decode a message into a bitmap image of our choice; this was to demonstrate knowledge and application of the principles of steganography. Implemented in Python.

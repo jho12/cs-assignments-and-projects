@@ -1,0 +1,2 @@
+# Assignment 3
+The goal of this assignment was to successfully encrypt and decrypt my name using RSA encryption. I implemented RSA encryption using the Miller-Rabin primality test as my basis to generate probable primes, with my choice of parameters only leaving a negligible chance of 10^-111 that the generated prime is not actually prime. Implemented in Python.
